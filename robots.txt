@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Descomente e ajuste quando o dominio definitivo estiver ativo:
+# Sitemap: https://profnestorfreire.com.br/sitemap.xml

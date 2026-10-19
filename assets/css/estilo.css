@@ -1,0 +1,981 @@
+@charset "utf-8";
+
+/* ==========================================================================
+   NESTOR FREIRE — MATEMÁTICA / NÚMEROS PRIMOS
+   Folha de estilo única. Organizada por seções, na mesma ordem do HTML.
+
+   Para trocar as cores do site inteiro, mexa apenas no bloco :root abaixo.
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   1. VARIÁVEIS
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Cores */
+  --tinta:        #16233f;   /* azul-tinta, cor principal dos títulos   */
+  --tinta-media:  #3d4a68;   /* texto corrido                            */
+  --tinta-suave:  #6b7690;   /* legendas, metadados                      */
+  --papel:        #fcfbf8;   /* fundo geral                              */
+  --papel-alt:    #f3f0e9;   /* fundo das seções alternadas              */
+  --linha:        #e0dbd0;   /* filetes e bordas                         */
+  --realce:       #8a6a3b;   /* bronze — detalhes e links                */
+  --realce-forte: #6d5229;
+
+  --cabecalho-fundo: rgba(252, 251, 248, 0.92);
+  --destaque-fundo:  #16233f;   /* botão principal                       */
+  --destaque-texto:  #fff;
+  --destaque-hover:  #0e1830;
+  --rodape-fundo:    #16233f;
+  --veu:             rgba(14, 24, 48, 0.45);   /* fundo atrás do leitor  */
+
+  /* Tipografia */
+  --serifada:  "Spectral", Georgia, "Times New Roman", serif;
+  --sem-serifa: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Medidas */
+  --largura-max: 68rem;
+  --largura-leitura: 40rem;
+  --respiro: clamp(1.25rem, 4vw, 2.5rem);
+  --altura-cabecalho: 4.5rem;
+
+  color-scheme: light;
+}
+
+/* Modo escuro: só quando o visitante aperta o botão do site (o padrão é
+   claro). Fica restrito à tela: na impressão o site sai sempre claro. */
+@media screen {
+  :root[data-tema="escuro"] {
+    --tinta:        #eef1f7;
+    --tinta-media:  #c3c9d7;
+    --tinta-suave:  #8d97ad;
+    --papel:        #0f1628;
+    --papel-alt:    #141d33;
+    --linha:        #26304a;
+    --realce:       #c9a46a;
+    --realce-forte: #dcbd8a;
+
+    --cabecalho-fundo: rgba(15, 22, 40, 0.9);
+    --destaque-fundo:  #eef1f7;
+    --destaque-texto:  #0f1628;
+    --destaque-hover:  #fff;
+    --rodape-fundo:    #0a0f1d;
+    --veu:             rgba(4, 8, 18, 0.65);
+
+    color-scheme: dark;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   2. BASE
+   -------------------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--altura-cabecalho) + 1rem);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta-media);
+  font-family: var(--sem-serifa);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--serifada);
+  color: var(--tinta);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+p { margin: 0 0 1.15em; }
+p:last-child { margin-bottom: 0; }
+
+a { color: var(--realce-forte); }
+a:hover { color: var(--tinta); }
+
+img { max-width: 100%; height: auto; display: block; }
+
+/* O atributo hidden precisa vencer qualquer display definido por classe.
+   Sem esta regra, algo como ".leitor { display: flex }" mantém o elemento
+   visível mesmo marcado como hidden — e o site abre com as sobreposições
+   escancaradas. */
+[hidden] { display: none !important; }
+
+code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  background: var(--papel-alt);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+/* Foco visível e consistente — nunca remover sem substituir. */
+:focus-visible {
+  outline: 2px solid var(--realce);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   3. UTILITÁRIOS
+   -------------------------------------------------------------------------- */
+
+.container {
+  width: 100%;
+  max-width: var(--largura-max);
+  margin-inline: auto;
+  padding-inline: var(--respiro);
+}
+
+/* Visível apenas para leitores de tela. */
+.sr-apenas {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pular-para-conteudo {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 200;
+  background: var(--destaque-fundo);
+  color: var(--destaque-texto);
+  padding: 0.7rem 1.1rem;
+  border-radius: 0 0 4px 4px;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+.pular-para-conteudo:focus { top: 0; color: var(--destaque-texto); }
+
+.sobretitulo {
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--realce);
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+
+
+/* --------------------------------------------------------------------------
+   4. CABEÇALHO E MENU
+   -------------------------------------------------------------------------- */
+
+.cabecalho {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--cabecalho-fundo);
+  backdrop-filter: saturate(1.4) blur(8px);
+  border-bottom: 1px solid var(--linha);
+}
+
+.cabecalho__interno {
+  min-height: var(--altura-cabecalho);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.marca {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  line-height: 1.25;
+  margin-right: auto;   /* empurra menu e botões para a direita */
+}
+.marca__nome {
+  font-family: var(--serifada);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--tinta);
+}
+.marca__area {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+
+.menu__lista {
+  display: flex;
+  gap: 1.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.menu__lista a {
+  color: var(--tinta-media);
+  text-decoration: none;
+  font-size: 0.94rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.menu__lista a:hover {
+  color: var(--tinta);
+  border-bottom-color: var(--realce);
+}
+
+/* Botão do menu: só aparece no celular, e só quando há JavaScript. */
+.menu-botao { display: none; }
+
+.menu-botao__barras,
+.menu-botao__barras::before,
+.menu-botao__barras::after {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--tinta);
+  transition: transform 0.2s, opacity 0.2s;
+}
+.menu-botao__barras::before,
+.menu-botao__barras::after {
+  content: "";
+  position: absolute;
+}
+.menu-botao__barras::before { transform: translateY(-7px); }
+.menu-botao__barras::after  { transform: translateY(7px); }
+
+.menu-botao[aria-expanded="true"] .menu-botao__barras { background: transparent; }
+.menu-botao[aria-expanded="true"] .menu-botao__barras::before { transform: rotate(45deg); }
+.menu-botao[aria-expanded="true"] .menu-botao__barras::after  { transform: rotate(-45deg); }
+
+/* Botão de modo claro/escuro: só existe com JavaScript, que guarda a
+   escolha. Mostra o ícone do modo para o qual leva: lua no claro, sol
+   no escuro. */
+.tema-botao { display: none; }
+
+.js .tema-botao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  margin-left: 0.75rem;
+  padding: 0;
+  background: none;
+  border: 1px solid var(--linha);
+  border-radius: 4px;
+  color: var(--tinta);
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.js .tema-botao:hover {
+  background: var(--papel-alt);
+  border-color: var(--tinta-suave);
+}
+
+.tema-botao__icone--sol { display: none; }
+[data-tema="escuro"] .tema-botao__icone--lua { display: none; }
+[data-tema="escuro"] .tema-botao__icone--sol { display: block; }
+
+@media (max-width: 46rem) {
+  .cabecalho__interno { gap: 0.5rem; }
+
+  .js .tema-botao {
+    width: 44px;
+    height: 44px;
+    margin-left: 0;
+  }
+
+  .js .menu-botao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: 1px solid var(--linha);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .js .menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--papel);
+    border-bottom: 1px solid var(--linha);
+    box-shadow: 0 12px 24px rgba(22, 35, 63, 0.07);
+    display: none;
+  }
+  .js .menu[data-aberto="sim"] { display: block; }
+
+  .js .menu__lista {
+    flex-direction: column;
+    gap: 0;
+    padding: 0.5rem var(--respiro) 1rem;
+  }
+  .js .menu__lista a {
+    display: block;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--linha);
+  }
+  .js .menu__lista li:last-child a { border-bottom: 0; }
+}
+
+
+/* --------------------------------------------------------------------------
+   5. ABERTURA
+   -------------------------------------------------------------------------- */
+
+.abertura {
+  padding: clamp(3.5rem, 9vw, 7rem) 0 clamp(2.5rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--linha);
+  background:
+    radial-gradient(60rem 30rem at 85% -10%, rgba(138, 106, 59, 0.07), transparent 60%),
+    var(--papel);
+}
+
+.abertura__texto { max-width: 46rem; }
+
+.abertura__titulo {
+  font-size: clamp(2.4rem, 6.5vw, 4rem);
+  margin-bottom: 1.25rem;
+}
+.abertura__titulo em {
+  font-style: italic;
+  color: var(--realce-forte);
+}
+
+.abertura__resumo {
+  font-family: var(--serifada);
+  font-size: clamp(1.08rem, 2.2vw, 1.3rem);
+  line-height: 1.6;
+  max-width: 38rem;
+  color: var(--tinta-media);
+}
+
+.abertura__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 2rem;
+}
+
+.botao {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  border-radius: 3px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background-color 0.18s, color 0.18s, border-color 0.18s;
+}
+.botao--principal {
+  background: var(--destaque-fundo);
+  color: var(--destaque-texto);
+  border-color: var(--destaque-fundo);
+}
+.botao--principal:hover {
+  background: var(--destaque-hover);
+  border-color: var(--destaque-hover);
+  color: var(--destaque-texto);
+}
+
+.botao--discreto {
+  color: var(--tinta);
+  border-color: var(--linha);
+  background: transparent;
+}
+.botao--discreto:hover { border-color: var(--tinta); color: var(--tinta); }
+
+.faixa-primos {
+  margin: clamp(3rem, 7vw, 5rem) 0 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  color: var(--tinta-suave);
+  opacity: 0.55;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-top: 1px solid var(--linha);
+  padding-top: 1rem;
+}
+
+
+/* --------------------------------------------------------------------------
+   6. SEÇÕES
+   -------------------------------------------------------------------------- */
+
+.secao { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+
+.secao--alternada {
+  background: var(--papel-alt);
+  border-block: 1px solid var(--linha);
+}
+
+.secao__cabecalho { margin-bottom: clamp(2rem, 4vw, 3rem); }
+
+.secao__titulo { font-size: clamp(1.8rem, 4vw, 2.5rem); }
+
+.secao__descricao {
+  margin-top: 0.9rem;
+  max-width: var(--largura-leitura);
+  color: var(--tinta-suave);
+}
+
+
+/* --------------------------------------------------------------------------
+   7. SOBRE
+   -------------------------------------------------------------------------- */
+
+.sobre {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+@media (min-width: 52rem) {
+  .sobre { grid-template-columns: minmax(0, 20rem) minmax(0, 1fr); }
+}
+
+.sobre__retrato {
+  margin: 0;
+  border: 1px solid var(--linha);
+  background: var(--papel-alt);
+  padding: 0.5rem;
+}
+.sobre__retrato img { width: 100%; }
+.sobre__retrato figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--tinta-suave);
+  text-align: center;
+}
+
+.dados {
+  margin: 2.25rem 0 0;
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--linha);
+}
+.dados__item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--linha);
+}
+.dados dt {
+  flex: 0 0 8rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  padding-top: 0.15rem;
+}
+.dados dd {
+  margin: 0;
+  font-family: var(--serifada);
+  color: var(--tinta);
+  font-size: 1.05rem;
+}
+
+
+/* --------------------------------------------------------------------------
+   8. GALERIA DE QUADROS
+   -------------------------------------------------------------------------- */
+
+.galeria {
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+}
+
+.quadro { margin: 0; }
+
+.quadro__gatilho {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--linha);
+  background: var(--papel);
+  cursor: zoom-in;
+  overflow: hidden;
+  transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+}
+.quadro__gatilho:hover {
+  border-color: var(--realce);
+  box-shadow: 0 10px 24px rgba(22, 35, 63, 0.1);
+  transform: translateY(-2px);
+}
+
+.quadro__gatilho img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.quadro figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  color: var(--tinta-suave);
+  line-height: 1.45;
+}
+
+
+/* --------------------------------------------------------------------------
+   9. LISTA DE ARTIGOS
+   -------------------------------------------------------------------------- */
+
+.lista-artigos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--linha);
+}
+
+.ficha { border-bottom: 1px solid var(--linha); }
+
+.ficha__gatilho {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: clamp(1.4rem, 3vw, 2rem) 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: padding-inline-start 0.2s;
+}
+.ficha__gatilho:hover { padding-inline-start: 0.6rem; }
+.ficha__gatilho:hover .ficha__titulo { color: var(--realce-forte); }
+
+.ficha__meta {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  margin-bottom: 0.5rem;
+}
+
+.ficha__titulo {
+  font-family: var(--serifada);
+  font-size: clamp(1.25rem, 2.6vw, 1.6rem);
+  color: var(--tinta);
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+  line-height: 1.25;
+  transition: color 0.18s;
+}
+
+.ficha__resumo {
+  max-width: var(--largura-leitura);
+  color: var(--tinta-media);
+  margin: 0 0 0.9rem;
+}
+
+.ficha__acao {
+  font-size: 0.9rem;
+  color: var(--realce-forte);
+  font-weight: 500;
+}
+.ficha__acao::after {
+  content: " →";
+  transition: margin-inline-start 0.2s;
+}
+.ficha__gatilho:hover .ficha__acao::after { margin-inline-start: 0.25rem; }
+
+
+/* --------------------------------------------------------------------------
+   10. CONTATO
+   -------------------------------------------------------------------------- */
+
+.contato {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+  max-width: 42rem;
+  border-top: 1px solid var(--linha);
+}
+.contato__item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--linha);
+}
+.contato__rotulo {
+  flex: 0 0 8rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  padding-top: 0.2rem;
+}
+.contato__valor {
+  font-family: var(--serifada);
+  font-size: 1.05rem;
+  color: var(--tinta);
+}
+
+.contato__aviso {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--tinta-suave);
+  font-style: italic;
+}
+
+
+/* --------------------------------------------------------------------------
+   11. RODAPÉ
+   -------------------------------------------------------------------------- */
+
+.rodape {
+  background: var(--rodape-fundo);
+  color: rgba(255, 255, 255, 0.72);
+  padding: 2.5rem 0;
+}
+.rodape__interno {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.rodape__marca {
+  font-family: var(--serifada);
+  font-size: 1.15rem;
+  color: #fff;
+  margin: 0;
+}
+.rodape__nota {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+
+/* --------------------------------------------------------------------------
+   12. BIBLIOTECA (só aparece quando não há JavaScript)
+   -------------------------------------------------------------------------- */
+
+.biblioteca {
+  padding: clamp(3rem, 7vw, 5rem) 0;
+  border-top: 1px solid var(--linha);
+}
+.biblioteca__titulo {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  margin-bottom: 2.5rem;
+}
+.biblioteca .artigo + .artigo {
+  margin-top: 3.5rem;
+  padding-top: 3.5rem;
+  border-top: 1px solid var(--linha);
+}
+.biblioteca .artigo__cabecalho { margin-bottom: 1.75rem; }
+.biblioteca .artigo__titulo { font-size: clamp(1.4rem, 3vw, 1.9rem); }
+.biblioteca .artigo__meta,
+.biblioteca .artigo__resumo,
+.biblioteca .artigo__corpo { max-width: var(--largura-leitura); }
+
+/* Com JavaScript, os artigos são lidos no leitor sobreposto. */
+.js .biblioteca { display: none; }
+
+.artigo__meta {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  margin: 0.75rem 0;
+}
+.artigo__resumo {
+  font-family: var(--serifada);
+  font-size: 1.1rem;
+  color: var(--tinta-media);
+  font-style: italic;
+  margin: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   13. PROSA — tipografia do texto longo
+   -------------------------------------------------------------------------- */
+
+.prosa {
+  font-family: var(--serifada);
+  font-size: 1.08rem;
+  line-height: 1.75;
+  color: var(--tinta-media);
+  max-width: var(--largura-leitura);
+}
+.prosa > * + * { margin-top: 1.2em; }
+/* Só a margem de baixo: um "margin: 0" aqui anularia o espaço acima. */
+.prosa p { margin-bottom: 0; }
+
+.prosa h4 {
+  font-size: 1.2rem;
+  margin-top: 2em;
+  margin-bottom: -0.4em;
+}
+
+.prosa blockquote {
+  margin: 1.8em 0;
+  padding: 0.2em 0 0.2em 1.4em;
+  border-left: 2px solid var(--realce);
+  font-style: italic;
+  color: var(--tinta);
+}
+.prosa blockquote p { margin: 0; }
+
+.prosa strong { color: var(--tinta); font-weight: 600; }
+
+.prosa sub { font-size: 0.75em; }
+
+/* Artigo publicado em revista: subtítulo inicial, ficha da fonte e links. */
+.prosa > h4:first-child { margin-top: 0; }
+
+.prosa .artigo__fonte {
+  font-family: var(--sem-serifa);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--tinta-suave);
+  padding-top: 1.2em;
+  border-top: 1px solid var(--linha);
+}
+
+.prosa .artigo__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* No leitor, o resumo da revista aparece encurtado, para os botões do
+   artigo completo caberem na tela sem rolar. Sem JavaScript (Biblioteca),
+   o resumo aparece inteiro. */
+.leitor__conteudo .artigo__trecho {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+.prosa .botao {
+  font-family: var(--sem-serifa);
+  line-height: 1.4;
+}
+
+
+/* --------------------------------------------------------------------------
+   14. LEITOR DE ARTIGO
+   -------------------------------------------------------------------------- */
+
+.leitor,
+.lente {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.leitor__fundo,
+.lente__fundo {
+  position: absolute;
+  inset: 0;
+  background: var(--veu);
+  backdrop-filter: blur(2px);
+  animation: surgir 0.2s ease-out;
+}
+
+@keyframes surgir { from { opacity: 0; } to { opacity: 1; } }
+@keyframes deslizar {
+  from { transform: translateX(2rem); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+.leitor__painel {
+  position: relative;
+  width: min(46rem, 100%);
+  background: var(--papel);
+  border-left: 1px solid var(--linha);   /* separa o painel do fundo no modo escuro */
+  display: flex;
+  flex-direction: column;
+  box-shadow: -20px 0 50px rgba(14, 24, 48, 0.18);
+  animation: deslizar 0.25s ease-out;
+}
+
+.leitor__progresso {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--linha);
+}
+.leitor__progresso-barra {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--realce);
+  transition: width 0.1s linear;
+}
+
+.leitor__barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem var(--respiro);
+  border-bottom: 1px solid var(--linha);
+  flex: 0 0 auto;
+}
+.leitor__origem {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--realce);
+  font-weight: 600;
+}
+
+.leitor__fechar,
+.lente__fechar {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  line-height: 1;
+  background: none;
+  border: 1px solid var(--linha);
+  border-radius: 4px;
+  color: var(--tinta);
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.leitor__fechar:hover,
+.lente__fechar:hover {
+  background: var(--papel-alt);
+  border-color: var(--tinta-suave);
+}
+
+.leitor__conteudo {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: clamp(2rem, 5vw, 3.5rem) var(--respiro) 5rem;
+}
+.leitor__conteudo .artigo__titulo {
+  font-size: clamp(1.6rem, 4vw, 2.3rem);
+  max-width: var(--largura-leitura);
+}
+.leitor__conteudo .artigo__cabecalho {
+  margin-bottom: 2rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--linha);
+  max-width: var(--largura-leitura);
+}
+
+@media (max-width: 46rem) {
+  .leitor__painel { width: 100%; }
+}
+
+
+/* --------------------------------------------------------------------------
+   15. AMPLIAÇÃO DE IMAGEM
+   -------------------------------------------------------------------------- */
+
+.lente { align-items: center; justify-content: center; }
+
+.lente__fundo { background: rgba(14, 24, 48, 0.85); }
+
+.lente__painel {
+  position: relative;
+  max-width: min(64rem, 94vw);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  animation: surgir 0.2s ease-out;
+}
+
+.lente__fechar {
+  position: absolute;
+  top: -3.25rem;
+  right: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+.lente__fechar:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #fff;
+}
+
+.lente__figura {
+  margin: 0;
+  overflow: auto;
+}
+.lente__figura img {
+  max-width: 100%;
+  max-height: 78vh;
+  width: auto;
+  margin-inline: auto;
+  background: var(--papel);
+}
+.lente__figura figcaption {
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+
+/* --------------------------------------------------------------------------
+   16. IMPRESSÃO
+   -------------------------------------------------------------------------- */
+
+@media print {
+  .cabecalho,
+  .abertura__acoes,
+  .faixa-primos,
+  .leitor,
+  .lente,
+  .rodape,
+  .pular-para-conteudo,
+  .lista-artigos { display: none !important; }
+
+  .js .biblioteca { display: block !important; }
+
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .secao--alternada { background: none; }
+  .artigo { break-inside: avoid-page; }
+  h1, h2, h3, h4 { break-after: avoid-page; }
+}

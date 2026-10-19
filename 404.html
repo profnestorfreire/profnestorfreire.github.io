@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Página não encontrada — Nestor Freire</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&amp;family=Inter:wght@400;500&amp;display=swap">
+<link rel="stylesheet" href="/assets/css/estilo.css">
+<!-- Repete a escolha de tema feita no botão do site. Sem escolha, fica claro. -->
+<script>
+  (function () {
+    try {
+      if (localStorage.getItem("tema") === "escuro") {
+        document.documentElement.setAttribute("data-tema", "escuro");
+      }
+    } catch (erro) { /* sem armazenamento: fica claro */ }
+  })();
+</script>
+<style>
+  .erro {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+  .erro__numero {
+    font-family: var(--serifada);
+    font-size: clamp(4rem, 14vw, 8rem);
+    color: var(--realce);
+    line-height: 1;
+    margin: 0 0 1rem;
+    opacity: 0.65;
+  }
+  .erro__acoes { justify-content: center; }
+</style>
+</head>
+<body>
+
+<main class="erro">
+  <div class="container">
+    <p class="erro__numero">404</p>
+    <h1 class="secao__titulo">Página não encontrada</h1>
+    <p class="secao__descricao" style="margin-inline:auto">
+      O endereço que você procurou não existe ou foi movido.
+    </p>
+    <p class="abertura__acoes erro__acoes">
+      <a class="botao botao--principal" href="/">Voltar ao início</a>
+      <a class="botao botao--discreto" href="/#artigos">Ver os artigos</a>
+    </p>
+  </div>
+</main>
+
+</body>
+</html>

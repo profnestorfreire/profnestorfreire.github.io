@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Nestor Freire — Matemático | Números Primos</title>
+<meta name="description" content="Nestor Freire, matemático dedicado ao estudo dos números primos. Artigos, demonstrações e registros de pesquisa.">
+<meta name="author" content="Nestor Freire">
+<meta name="theme-color" content="#16233f">
+
+<!--
+  ====================================================================
+  QUANDO O DOMÍNIO DEFINITIVO ESTIVER ATIVO, descomente as 3 linhas
+  abaixo e troque pelo endereço real. Antes disso, deixe comentado:
+  apontar para um domínio que ainda não existe atrapalha o Google.
+  ====================================================================
+  <link rel="canonical" href="https://profnestorfreire.com.br/">
+  <meta property="og:url" content="https://profnestorfreire.com.br/">
+  <meta property="og:image" content="https://profnestorfreire.com.br/assets/img/capa-social.jpg">
+-->
+
+<meta property="og:type" content="profile">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Nestor Freire">
+<meta property="og:title" content="Nestor Freire — Matemático | Números Primos">
+<meta property="og:description" content="Matemático dedicado ao estudo dos números primos. Artigos, demonstrações e registros de pesquisa.">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&amp;family=Inter:wght@400;500;600&amp;display=swap">
+
+<link rel="stylesheet" href="assets/css/estilo.css">
+
+<!-- Antes de a página pintar: marca que o JavaScript está ativo e aplica
+     o tema. Sem isto, a página "pisca" ao esconder a biblioteca de
+     artigos ou ao trocar de cor. O padrão é claro; o escuro só vale para
+     quem o escolheu no botão do site. -->
+<script>
+  (function (raiz) {
+    raiz.className += " js";
+    var tema = null;
+    try { tema = localStorage.getItem("tema"); } catch (erro) { /* sem armazenamento: fica claro */ }
+    raiz.setAttribute("data-tema", tema === "escuro" ? "escuro" : "claro");
+  })(document.documentElement);
+</script>
+
+<!-- Dados estruturados: ajuda o Google a entender de quem é o site. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Nestor Freire",
+  "jobTitle": "Matemático",
+  "description": "Matemático dedicado ao estudo dos números primos.",
+  "knowsAbout": ["Teoria dos Números", "Números Primos", "Matemática Pura"]
+}
+</script>
+</head>
+
+<body>
+
+<a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+<!-- ============================ CABEÇALHO ============================ -->
+<header class="cabecalho" id="topo">
+  <div class="container cabecalho__interno">
+
+    <a class="marca" href="#topo">
+      <span class="marca__nome">Nestor Freire</span>
+      <span class="marca__area">Matemática &middot; Números Primos</span>
+    </a>
+
+    <button class="menu-botao" type="button" aria-expanded="false" aria-controls="menu-principal">
+      <span class="menu-botao__barras" aria-hidden="true"></span>
+      <span class="sr-apenas">Abrir menu</span>
+    </button>
+
+    <nav class="menu" id="menu-principal" aria-label="Navegação principal">
+      <ul class="menu__lista">
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#quadros">Quadros</a></li>
+        <li><a href="#artigos">Artigos</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+
+    <button class="tema-botao" type="button" aria-pressed="false">
+      <svg class="tema-botao__icone tema-botao__icone--lua" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+        <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      </svg>
+      <svg class="tema-botao__icone tema-botao__icone--sol" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="sr-apenas">Modo escuro</span>
+    </button>
+
+  </div>
+</header>
+
+<main id="conteudo">
+
+  <!-- ============================ ABERTURA ============================ -->
+  <section class="abertura">
+    <div class="container">
+
+      <div class="abertura__texto">
+        <p class="sobretitulo">Matemático</p>
+        <h1 class="abertura__titulo">O estudo dos<br><em>números primos</em></h1>
+        <p class="abertura__resumo">
+          <!-- EDITE: uma apresentação curta, duas ou três linhas. -->
+          Pesquisa dedicada à distribuição, à estrutura e às propriedades dos
+          números primos — os elementos indivisíveis a partir dos quais todos
+          os demais inteiros se constroem.
+        </p>
+        <p class="abertura__acoes">
+          <a class="botao botao--principal" href="#artigos">Ler os artigos</a>
+          <a class="botao botao--discreto" href="#sobre">Sobre o autor</a>
+        </p>
+      </div>
+
+      <!-- Faixa decorativa com os primeiros números primos. -->
+      <p class="faixa-primos" aria-hidden="true">
+        2 &middot; 3 &middot; 5 &middot; 7 &middot; 11 &middot; 13 &middot; 17 &middot; 19 &middot; 23 &middot; 29 &middot;
+        31 &middot; 37 &middot; 41 &middot; 43 &middot; 47 &middot; 53 &middot; 59 &middot; 61 &middot; 67 &middot; 71 &middot;
+        73 &middot; 79 &middot; 83 &middot; 89 &middot; 97 &middot; 101 &middot; 103 &middot; 107 &middot; 109
+      </p>
+
+    </div>
+  </section>
+
+  <!-- ============================== SOBRE ============================== -->
+  <section class="secao" id="sobre">
+    <div class="container">
+
+      <div class="secao__cabecalho">
+        <p class="sobretitulo">Perfil</p>
+        <h2 class="secao__titulo">Sobre o professor</h2>
+      </div>
+
+      <div class="sobre">
+        <figure class="sobre__retrato">
+          <!--
+            TROCAR A FOTO: guarde a nova em assets/img/ e ajuste width e height
+            para o tamanho real da imagem (isso evita que o texto "pule"
+            enquanto ela carrega).
+          -->
+          <img src="assets/img/retrato-nestor-freire.jpg"
+               alt="O professor Nestor Freire, sorridente, segurando um quadro hexagonal amarelo com os números primos dispostos em espiral"
+               width="1200" height="1600" loading="lazy" decoding="async">
+          <figcaption>Com o Hexágono de Números Primos</figcaption>
+        </figure>
+
+        <div class="sobre__texto">
+          <div class="prosa">
+            <!-- EDITE ESTES PARÁGRAFOS. -->
+            <p>
+              Nestor Freire é matemático e dedica sua pesquisa aos números primos,
+              com atenção particular à sua distribuição ao longo da reta dos
+              inteiros e aos padrões que dela emergem.
+            </p>
+            <p>
+              Seu trabalho reúne demonstrações, conjecturas e registros de aula —
+              boa parte deles nascida diretamente do quadro, no exercício cotidiano
+              de ensinar e de investigar.
+            </p>
+            <p>
+              Esta página reúne seus artigos e um arquivo visual desses registros.
+            </p>
+          </div>
+
+          <dl class="dados">
+            <div class="dados__item">
+              <dt>Área</dt>
+              <dd>Teoria dos Números</dd>
+            </div>
+            <div class="dados__item">
+              <dt>Ênfase</dt>
+              <dd>Distribuição de primos</dd>
+            </div>
+            <div class="dados__item">
+              <dt>Formação</dt>
+              <dd>Matemática</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================= QUADROS ============================= -->
+  <section class="secao secao--alternada" id="quadros">
+    <div class="container">
+
+      <div class="secao__cabecalho">
+        <p class="sobretitulo">Arquivo visual</p>
+        <h2 class="secao__titulo">Quadros</h2>
+        <p class="secao__descricao">
+          Registros fotográficos das demonstrações desenvolvidas no quadro.
+          Clique em qualquer imagem para ampliá-la.
+        </p>
+      </div>
+
+      <!--
+        ================================================================
+        COMO ADICIONAR UMA FOTO DE QUADRO
+        Copie um bloco <figure class="quadro"> inteiro, cole abaixo do
+        último e troque o src, o alt e a legenda. Nada mais é preciso —
+        a ampliação passa a funcionar sozinha.
+        ================================================================
+      -->
+      <div class="galeria">
+
+        <figure class="quadro">
+          <button class="quadro__gatilho" type="button">
+            <img src="assets/img/placeholder-quadro.svg"
+                 alt="Demonstração da infinitude dos números primos escrita no quadro"
+                 width="800" height="600" loading="lazy" decoding="async">
+            <span class="sr-apenas">Ampliar imagem</span>
+          </button>
+          <figcaption>A infinitude dos primos — demonstração de Euclides</figcaption>
+        </figure>
+
+        <figure class="quadro">
+          <button class="quadro__gatilho" type="button">
+            <img src="assets/img/placeholder-quadro.svg"
+                 alt="Desenvolvimento do crivo de Eratóstenes no quadro"
+                 width="800" height="600" loading="lazy" decoding="async">
+            <span class="sr-apenas">Ampliar imagem</span>
+          </button>
+          <figcaption>O crivo de Eratóstenes</figcaption>
+        </figure>
+
+        <figure class="quadro">
+          <button class="quadro__gatilho" type="button">
+            <img src="assets/img/placeholder-quadro.svg"
+                 alt="Anotações sobre a distribuição dos números primos no quadro"
+                 width="800" height="600" loading="lazy" decoding="async">
+            <span class="sr-apenas">Ampliar imagem</span>
+          </button>
+          <figcaption>Distribuição dos primos e a função de contagem</figcaption>
+        </figure>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================= ARTIGOS ============================= -->
+  <section class="secao" id="artigos">
+    <div class="container">
+
+      <div class="secao__cabecalho">
+        <p class="sobretitulo">Publicações</p>
+        <h2 class="secao__titulo">Artigos</h2>
+        <p class="secao__descricao">
+          Clique em um artigo para ler o resumo aqui mesmo. O texto completo
+          abre na revista em que foi publicado.
+        </p>
+      </div>
+
+      <!-- As fichas são montadas automaticamente a partir dos artigos
+           que estão na Biblioteca, ao final do documento. -->
+      <ul class="lista-artigos" id="lista-artigos"></ul>
+
+    </div>
+  </section>
+
+  <!-- ============================= CONTATO ============================= -->
+  <section class="secao secao--alternada" id="contato">
+    <div class="container">
+
+      <div class="secao__cabecalho">
+        <p class="sobretitulo">Fale com o professor</p>
+        <h2 class="secao__titulo">Contato</h2>
+      </div>
+
+      <!--
+        PREENCHER: troque os endereços pelos reais e remova o atributo
+        hidden de cada item que for usar. Os que sobrarem com hidden
+        simplesmente não aparecem.
+      -->
+      <ul class="contato">
+        <li class="contato__item" hidden>
+          <span class="contato__rotulo">E-mail</span>
+          <a class="contato__valor" href="mailto:ENDERECO@EXEMPLO.COM">ENDERECO@EXEMPLO.COM</a>
+        </li>
+        <li class="contato__item" hidden>
+          <span class="contato__rotulo">Lattes</span>
+          <a class="contato__valor" href="#" rel="noopener">Currículo Lattes</a>
+        </li>
+        <li class="contato__item" hidden>
+          <span class="contato__rotulo">Instituição</span>
+          <span class="contato__valor">NOME DA INSTITUIÇÃO</span>
+        </li>
+      </ul>
+
+      <p class="contato__aviso" id="contato-aviso">
+        Os dados de contato ainda serão preenchidos.
+      </p>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================== RODAPÉ ============================== -->
+<footer class="rodape">
+  <div class="container rodape__interno">
+    <p class="rodape__marca">Nestor Freire</p>
+    <p class="rodape__nota"><span id="ano"></span> &middot; Matemática e Teoria dos Números</p>
+  </div>
+</footer>
+
+<!--
+  =====================================================================
+  BIBLIOTECA DE ARTIGOS
+
+  Cada <article> daqui vira automaticamente uma ficha na seção Artigos
+  e é o conteúdo que abre no leitor.
+
+  Para publicar um artigo novo: copie um bloco <article> inteiro, cole
+  abaixo do último e troque o conteúdo. Só isso.
+
+  Artigos publicados em revista trazem aqui só o resumo e os links
+  (artigo completo e PDF). O atributo data-acao troca o texto do botão
+  da ficha; sem ele, a ficha diz "Ler o artigo".
+
+  Quem entrar com o JavaScript desligado lê os artigos aqui mesmo —
+  nada se perde.
+  =====================================================================
+-->
+<section class="biblioteca" id="biblioteca" aria-label="Artigos">
+  <div class="container">
+    <h2 class="biblioteca__titulo">Artigos</h2>
+
+    <article class="artigo" id="artigo-identificar-numeros-primos-em-intervalos" data-acao="Ler o resumo">
+      <header class="artigo__cabecalho">
+        <h3 class="artigo__titulo">Identificar número primos em intervalos</h3>
+        <p class="artigo__meta"><time datetime="2026-08-19">19 de agosto de 2026</time> &middot; Revista Tópicos</p>
+        <p class="artigo__resumo">
+          Um método determinístico de filtragem, implementado em planilha, que
+          isola os primos nas classes 6k ± 1 e mede como a sua densidade diminui
+          à medida que a escala numérica cresce.
+        </p>
+      </header>
+
+      <div class="artigo__corpo prosa">
+        <h4>Resumo</h4>
+        <p class="artigo__trecho">
+          Este artigo analisa a distribuição e a identificação de números primos
+          na escala aritmética por meio de um método determinístico de filtragem
+          em intervalos discretos. O estudo investiga as propriedades estruturais
+          de elementos contidos nas classes de resíduos adjacentes aos múltiplos
+          de seis (6k mais ou menos 1), isolando os números primos dos elementos
+          compostos gerados por produtos fatoriais e potências de bases primas.
+          O objetivo geral consiste em validar a eficácia de um algoritmo de
+          triagem e mensurar a densidade de primariedade à medida que se expande
+          o limite superior da escala numérica. A metodologia adotada possui
+          abordagem quantitativa e exploratória, implementada computacionalmente
+          por meio de rotinas lógicas e codificação cromática condicional no
+          software Microsoft Excel. O universo amostral abrangeu desde domínios
+          basais até um intervalo macroscópico de sete dígitos (994.008 a
+          1.018.080), totalizando 24.072 inteiros. Os resultados revelam que,
+          embora o subconjunto de adjacência de 6k corresponda a 33,333% do
+          domínio total, a infiltração progressiva de compostos reduz a taxa de
+          primariedade a 7,348787% do intervalo global e a 22,046361% dentro das
+          ordens 6k mais ou menos 1. Conclui-se que os objetivos foram plenamente
+          atingidos, confirmando a hipótese de que a densidade de números primos
+          é inversamente proporcional ao avanço da escala aritmética. O modelo
+          proposto oferece uma contribuição prática de baixo custo computacional
+          para a auditoria de matrizes numéricas e visualização na Teoria dos
+          Números.
+        </p>
+        <p class="artigo__links">
+          <a class="botao botao--principal" href="https://revistatopicos.com.br/artigos/identificar-numero-primos-em-intervalos" target="_blank" rel="noopener">Ler o artigo completo na revista<span class="sr-apenas"> (abre em nova aba)</span></a>
+          <a class="botao botao--discreto" href="https://revistatopicos.com.br/generate/pdf_zenodo/pub_787132749.pdf" target="_blank" rel="noopener">Baixar PDF<span class="sr-apenas"> (abre em nova aba)</span></a>
+        </p>
+        <p>
+          <strong>Palavras-chave:</strong> Números Primos; Aritmética Modular;
+          Planilha Eletrônica; Filtragem Algorítmica; Densidade Numérica.
+        </p>
+        <p class="artigo__fonte">
+          Publicado na <em>Revista Tópicos</em>, v. 4, n. 36, 2026.
+          ISSN 2965-6672. DOI:
+          <a href="https://doi.org/10.70773/revistatopicos/787132749" rel="noopener">10.70773/revistatopicos/787132749</a>
+        </p>
+      </div>
+    </article>
+
+    <article class="artigo" id="artigo-identify-prime-numbers-within-intervals" data-acao="Ler o resumo">
+      <header class="artigo__cabecalho">
+        <h3 class="artigo__titulo" lang="en">Identify prime numbers within intervals</h3>
+        <p class="artigo__meta"><time datetime="2026-08-31">31 de agosto de 2026</time> &middot; Revista Tópicos &middot; em inglês</p>
+        <p class="artigo__resumo">
+          Edição em inglês do estudo sobre a filtragem de primos nas classes
+          6k ± 1, publicada no mesmo número da revista.
+        </p>
+      </header>
+
+      <div class="artigo__corpo prosa">
+        <h4 lang="en">Abstract</h4>
+        <p class="artigo__trecho" lang="en">
+          This article analyzes the distribution and identification of prime
+          numbers along the arithmetic scale through a deterministic filtering
+          method in discrete intervals. The study investigates the structural
+          properties of elements contained in the residue classes adjacent to
+          multiples of six (6k more or less 1), isolating prime numbers from
+          composite elements generated by factorial products and powers of prime
+          bases. The general objective is to validate the efficacy of a screening
+          algorithm and measure the density of primality as the upper limit of
+          the numerical scale expands. The methodology adopts a quantitative and
+          exploratory approach, computationally implemented through logical
+          routines and conditional chromatic coding in Microsoft Excel software.
+          The sample universe ranged from basal domains to a macroscopic
+          seven-digit interval (994,008 to 1,018,080), totaling 24,072 integers.
+          The results reveal that although the adjacency subset of 6k corresponds
+          to 33.333% of the total domain, the progressive infiltration of
+          composites reduces the primality rate to 7.348787% of the global
+          interval and to 22.046361% within the 6k more or less 1 order. It is
+          concluded that the objectives were fully achieved, confirming the
+          hypothesis that the density of prime numbers is inversely proportional
+          to the advancement of the arithmetic scale. The proposed model offers a
+          low computational cost practical contribution to numerical matrix
+          auditing and visualization in Number Theory.
+        </p>
+        <p class="artigo__links">
+          <a class="botao botao--principal" href="https://revistatopicos.com.br/artigos/identify-prime-numbers-within-intervals" target="_blank" rel="noopener">Ler o artigo completo na revista<span class="sr-apenas"> (abre em nova aba)</span></a>
+          <a class="botao botao--discreto" href="https://revistatopicos.com.br/generate/pdf_zenodo/pub_788159015.pdf" target="_blank" rel="noopener">Baixar PDF<span class="sr-apenas"> (abre em nova aba)</span></a>
+        </p>
+        <p lang="en">
+          <strong>Keywords:</strong> Prime Numbers; Modular Arithmetic;
+          Electronic Spreadsheet; Algorithmic Filtering; Numerical Density.
+        </p>
+        <p class="artigo__fonte">
+          Publicado na <em>Revista Tópicos</em>, v. 4, n. 36, 2026.
+          ISSN 2965-6672. DOI:
+          <a href="https://doi.org/10.70773/revistatopicos/788159015" rel="noopener">10.70773/revistatopicos/788159015</a>
+        </p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ==================== LEITOR DE ARTIGO (sobreposição) ==================== -->
+<div class="leitor" id="leitor" hidden>
+  <div class="leitor__fundo" data-fechar></div>
+
+  <div class="leitor__painel" role="dialog" aria-modal="true"
+       aria-labelledby="leitor-rotulo" tabindex="-1">
+
+    <div class="leitor__progresso" aria-hidden="true">
+      <span class="leitor__progresso-barra" id="leitor-progresso"></span>
+    </div>
+
+    <header class="leitor__barra">
+      <p class="leitor__origem" id="leitor-rotulo">Artigo</p>
+      <button class="leitor__fechar" type="button" data-fechar>
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-apenas">Fechar artigo</span>
+      </button>
+    </header>
+
+    <div class="leitor__conteudo" id="leitor-conteudo" tabindex="0"></div>
+  </div>
+</div>
+
+<!-- ======================== AMPLIAÇÃO DE IMAGEM ======================== -->
+<div class="lente" id="lente" hidden>
+  <div class="lente__fundo" data-fechar></div>
+
+  <div class="lente__painel" role="dialog" aria-modal="true"
+       aria-label="Imagem ampliada" tabindex="-1">
+    <button class="lente__fechar" type="button" data-fechar>
+      <span aria-hidden="true">&times;</span>
+      <span class="sr-apenas">Fechar imagem</span>
+    </button>
+    <figure class="lente__figura">
+      <img id="lente-imagem" src="" alt="">
+      <figcaption id="lente-legenda"></figcaption>
+    </figure>
+  </div>
+</div>
+
+<script src="assets/js/site.js" defer></script>
+</body>
+</html>

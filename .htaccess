@@ -1,0 +1,49 @@
+# =====================================================================
+#  Configuracao do servidor (Apache / cPanel HostGator)
+#  Este arquivo comeca com ponto: no Gerenciador de Arquivos do cPanel
+#  e preciso ativar "Mostrar arquivos ocultos" para enxerga-lo.
+# =====================================================================
+
+# --- Pagina de erro personalizada ------------------------------------
+ErrorDocument 404 /404.html
+
+# --- Compressao: deixa o site mais leve -------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# --- Cache do navegador ----------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css            "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType image/jpeg          "access plus 1 year"
+  ExpiresByType image/png           "access plus 1 year"
+  ExpiresByType image/webp          "access plus 1 year"
+  ExpiresByType image/svg+xml       "access plus 1 year"
+  ExpiresByType text/html           "access plus 0 seconds"
+</IfModule>
+
+# --- Seguranca basica -------------------------------------------------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+Options -Indexes
+
+# =====================================================================
+#  ATENCAO — SO DESCOMENTE O BLOCO ABAIXO DEPOIS QUE:
+#    1. o dominio profnestorfreire.com.br estiver apontado, E
+#    2. o certificado SSL estiver emitido e funcionando.
+#  Ligar isso antes derruba o site.
+# =====================================================================
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteCond %{HTTPS} off
+#   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+#   RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+#   RewriteRule ^(.*)$ https://%1%{REQUEST_URI} [L,R=301]
+# </IfModule>
