@@ -508,7 +508,78 @@ code {
 
 
 /* --------------------------------------------------------------------------
-   8. GALERIA DE QUADROS
+   8. CURRÍCULO — resumo do Lattes, em grupos com linha do tempo
+   -------------------------------------------------------------------------- */
+
+.curriculo {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 3.5rem) clamp(2rem, 5vw, 4rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
+  align-items: start;
+}
+
+.curriculo__titulo {
+  font-size: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--linha);
+}
+
+.curriculo__nota {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  color: var(--tinta-suave);
+}
+
+.linha-do-tempo {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.linha-do-tempo__item {
+  display: grid;
+  grid-template-columns: 5.75rem minmax(0, 1fr);
+  gap: 0 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--linha);
+}
+.linha-do-tempo__ano {
+  padding-top: 0.15rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--realce-forte);
+}
+.linha-do-tempo__texto {
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: var(--tinta-media);
+}
+.linha-do-tempo__texto strong {
+  display: block;
+  font-family: var(--serifada);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--tinta);
+}
+
+/* Celular: o ano sobe para cima do texto, que ganha a largura toda. */
+@media (max-width: 30rem) {
+  .linha-do-tempo__item {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.15rem;
+  }
+}
+
+.curriculo__fonte {
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  font-size: 0.9rem;
+  color: var(--tinta-suave);
+}
+
+
+/* --------------------------------------------------------------------------
+   9. GALERIA DE QUADROS
    -------------------------------------------------------------------------- */
 
 .galeria {
@@ -550,7 +621,7 @@ code {
 
 
 /* --------------------------------------------------------------------------
-   9. LISTA DE ARTIGOS
+   10. LISTA DE ARTIGOS
    -------------------------------------------------------------------------- */
 
 .lista-artigos {
@@ -614,7 +685,7 @@ code {
 
 
 /* --------------------------------------------------------------------------
-   10. CONTATO
+   11. CONTATO
    -------------------------------------------------------------------------- */
 
 .contato {
@@ -656,7 +727,7 @@ code {
 
 
 /* --------------------------------------------------------------------------
-   11. RODAPÉ
+   12. RODAPÉ
    -------------------------------------------------------------------------- */
 
 .rodape {
@@ -684,7 +755,7 @@ code {
 
 
 /* --------------------------------------------------------------------------
-   12. BIBLIOTECA (só aparece quando não há JavaScript)
+   13. BIBLIOTECA (só aparece quando não há JavaScript)
    -------------------------------------------------------------------------- */
 
 .biblioteca {
@@ -726,7 +797,7 @@ code {
 
 
 /* --------------------------------------------------------------------------
-   13. PROSA — tipografia do texto longo
+   14. PROSA — tipografia do texto longo
    -------------------------------------------------------------------------- */
 
 .prosa {
@@ -794,7 +865,7 @@ code {
 
 
 /* --------------------------------------------------------------------------
-   14. LEITOR DE ARTIGO
+   15. LEITOR DE ARTIGO
    -------------------------------------------------------------------------- */
 
 .leitor,
@@ -910,7 +981,7 @@ code {
 
 
 /* --------------------------------------------------------------------------
-   15. AMPLIAÇÃO DE IMAGEM
+   16. AMPLIAÇÃO DE IMAGEM
    -------------------------------------------------------------------------- */
 
 .lente { align-items: center; justify-content: center; }
@@ -959,7 +1030,7 @@ code {
 
 
 /* --------------------------------------------------------------------------
-   16. IMPRESSÃO
+   17. IMPRESSÃO
    -------------------------------------------------------------------------- */
 
 @media print {
